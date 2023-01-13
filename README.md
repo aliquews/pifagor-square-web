@@ -24,4 +24,4 @@ local web server must be on [localhost][lh]
 
 [git]: <https://git-scm.com/download/win>
 [go]: <https://go.dev/doc/install>
-[lh]: <localhost:8000>
+[lh]: <http://localhost:8000>
