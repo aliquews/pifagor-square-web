@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Date struct {
@@ -27,7 +28,7 @@ func main() {
 	mux.HandleFunc("/", mainPage)
 	mux.HandleFunc("/info", infoPage)
 	mux.HandleFunc("/process", processForm)
-	fmt.Println("Server start listening at :8000")
+	fmt.Println("Server start listening at localhost:8000")
 	log.Fatal(http.ListenAndServe(":8000", mux))
 
 }
@@ -46,7 +47,7 @@ func mainPage(w http.ResponseWriter, request *http.Request) {
 
 func processForm(w http.ResponseWriter, request *http.Request) {
 	if err := request.ParseForm(); err != nil {
-		http.Error(w, err.Error(), 400)
+		log.Println("ERROR at", time.Now(), ": \t", err.Error())
 		return
 	}
 	str := request.FormValue("dateofbirth")
