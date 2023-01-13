@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type Date struct {
@@ -47,12 +46,13 @@ func mainPage(w http.ResponseWriter, request *http.Request) {
 
 func processForm(w http.ResponseWriter, request *http.Request) {
 	if err := request.ParseForm(); err != nil {
-		log.Println("ERROR at", time.Now(), ": \t", err.Error())
+		http.Redirect(w, request, "/", http.StatusBadRequest)
+		log.Println("ERROR:\t", err.Error())
 		return
 	}
 	str := request.FormValue("dateofbirth")
 	if str == "" {
-		http.Error(w, "NO DATE", 400)
+		http.Redirect(w, request, "/", http.StatusGone)
 		return
 	}
 	date.Date = getInfo(str)
@@ -62,7 +62,7 @@ func processForm(w http.ResponseWriter, request *http.Request) {
 func infoPage(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("static/info.html")
 	if err != nil {
-		http.Redirect(w, r, "/", http.StatusBadRequest)
+		http.Redirect(w, r, "/index", http.StatusBadRequest)
 		return
 	}
 	err = tmpl.Execute(w, map[string]interface{}{
@@ -70,7 +70,7 @@ func infoPage(w http.ResponseWriter, r *http.Request) {
 		"information": viewDescription(vI(date.Date)),
 	})
 	if err != nil {
-		log.Fatal(err)
+		log.Println("ERROR:\t", err.Error())
 		return
 	}
 }
