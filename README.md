@@ -16,7 +16,7 @@ or build
 ```
 go build main.go
 ```
-and run main.exe
+and run ```main.exe```
 
 local web server must be on [localhost][lh]
 
